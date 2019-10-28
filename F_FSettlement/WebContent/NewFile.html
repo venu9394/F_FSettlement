@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FSettlement 10603</title>
+<style type="text/css">
+tr:nth-child(even) {background-color: #cfcfcf;}
+.settlement_form input {
+	border: none;
+	outline: none;
+	border: 1px solid #cfcfcf;
+	padding: 5px;
+}
+.settlement_form table {
+    border-collapse: collapse;
+}
+.settlement_form table td {
+	padding: 5px 5px;
+}
+.hold_salary_table td {
+	padding: 24px 20px !important;
+}
+</style>
+</head>
+<body>
+	<div>
+		<form action="#" class="settlement_form">
+		<table align="center">
+			<tr>
+				<td><label>EmployeeCodeNumber :</label></td>
+				<td><input type="text"></td>
+				<td><label>Name of the Employee	:</label></td>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<td><label>Designation :</label></td>
+				<td><input type="text"></td>
+				<td><label>Department	:</label></td>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<td><label>Date of Joining	 :</label></td>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<td><label>Date of Resignation/Termination :</label></td>
+				<td><input type="text"></td>
+				<td><label>Date of Relieving :</label></td>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<td><label>CTC Consider From :</label></td>
+				<td><input type="text"></td>
+				<td><label>CTC Consider To :</label></td>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<td><label>Total Days :</label></td>
+				<td><input type="text"></td>
+				<td><label>LOP :</label></td>
+				<td><input type="text"></td>			
+				<td><label>Total Payable Days :</label></td>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<td><label>Gross Monthly Salary	:</label></td>
+				<td><input type="text"></td>
+				<td><label>Payable Base Days :</label></td>
+				<td><input type="text"></td>			
+				<td><label>Considered Months (Payperiods) :</label></td>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<td><label>EL Encashment :</label></td>
+				<td><input type="text"></td>
+			</tr>
+			<tr>
+				<td>CTC Consider /Not </td>
+				<td>
+					Yes &nbsp; <input type="radio" name="ctc" id="ctc_y" checked=""> 
+					No &nbsp; <input type="radio" name="ctc" id="ctc_n">
+				</td>
+			</tr>
+			<tr>
+			  <td colspan="3">
+			  <table border="1" class="hold_salary_table hold_salary_table1">
+			  <tbody><tr>
+			      <td align="center">
+			       Hold Salary Release
+			      </td>  
+			    <td><div id="myDiv">
+			        <table id="dataTable5">
+			        <tbody><tr>
+			        <td colspan="3" align="center">Pay Periods</td>
+			        </tr>
+			        <!-- <tr>
+			        <td><input type='checkbox' id='201702-23450' value='23450'> </td><td>201702 </td>
+			        </tr>
+			         <tr>
+			        <td><input type='checkbox' id='201702-23450' value='23450'> </td><td>201702 </td>
+			        </tr>
+			         <tr>
+			        <td><input type='checkbox' id='201702-23450' value='23450'> </td><td>201702 </td>
+			        </tr> -->
+			       </tbody></table>
+			       </div>
+			    </td>
+			     <td align="center">
+			       <input type="text" class="myclass" name="holdsalary" id="holdsalary" value="0" readonly="">
+			    </td>			    
+			  </tr></tbody></table>
+			  </td>
+			<!-- --------------********************* -->
+			<td colspan="3">
+			<table border="1">
+			 <tbody><tr>
+			<td>CTC Gross</td>
+			<td><input type="text" id="CTCEarning" class="myclass" readonly=""></td>
+			<td>CTC Deduction</td>
+			<td><input type="text" id="CTCDeduction" class="myclass" readonly=""></td>
+			</tr>
+			<tr>
+			<td>OTH Earings</td>
+			<td><input type="text" id="OTH_Ear" class="myclass" readonly=""></td>
+			<td>OTH Deductions</td>
+			<td><input type="text" id="OTH_Ded" class="myclass" readonly=""></td>
+			</tr>
+			<tr>
+			<td>Others</td>
+			<td><input type="text" id="OTH_Others" class="myclass" readonly="">
+			
+			 <input type="checkbox" id="OTH_Others_e_c" name="OTH_Others_e_c">
+			 <input type="checkbox" id="OTH_Others_d_c" name="OTH_Others_d_c">
+			</td>
+			</tr>
+			    
+			  </tbody></table>
+			  
+			  
+			  </td>
+			  <!-- ------------------------*************************************** -->
+			</tr>
+			<tr>
+				<td colspan="2"></td>
+				<td>
+				<input type="button" value="Caliculate CTC" onclick="loadCTC();">
+				</td>
+			</tr>
+		</table>
+		</form>
+		<table>
+<tbody><tr>
+<th>CTC Components</th>
+<th>Earnings</th>
+<th>Deductions</th>
+<th>Others</th>
+</tr>
+<tr>
+ <td><div style="overflow: scroll; height:300px;width:450px;overflow-x: auto;">								  
+													  <table id="dataTable"><table id="table2excel"><tbody><tr><th style="border: 1px solid rgb(221, 221, 221);">HEAD</th><th style="border: 1px solid rgb(221, 221, 221);">ACTUAL</th><th style="border: 1px solid rgb(221, 221, 221);">PAYABLE</th></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">TRAVEL ALLOWANCE (E)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="18_A" value="0" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="18_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">GROSS (E)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="22_A" value="25280" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="22_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">BASIC (E)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="24_A" value="12640" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="24_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">HRA (E)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="25_A" value="6320" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="25_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">CA (E)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="26_A" value="2528" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="26_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">MEDICAL (E)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="27_A" value="1250" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="27_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">EDUCATION (E)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="28_A" value="200" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="28_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">SPL ALLOW (E)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="29_A" value="2342" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="29_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">PT (D)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="30_A" value="200" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="30_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">PF (D)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="31_A" value="1517" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="31_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">ESI (D)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="32_A" value="0" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="32_P" value="0" readonly=""></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">KIT ALLOWANCE (E)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="70_A" value="0" readonly=""></td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="70_P" value="0" readonly=""></td></tr></tbody></table></table>
+													  </div></td>
+ <td><div id="EarningCal" style="overflow: scroll; height:300px;width:300px;overflow-x: auto;">								  
+													  <table id="dataTable2"><table id="table2excel"><tbody><tr><th style="border: 1px solid rgb(221, 221, 221);">HEAD</th><th style="border: 1px solid rgb(221, 221, 221);">ACTUAL</th></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">ADDITIONS</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="88" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Annual Bonus</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="69" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">ARREAR</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="87" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Bonus</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="94" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">COURFAX</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="72" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">DA</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="73" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">FARE</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="74" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">FSConveyance</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="96" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">INCENTIVE</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="80" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Local Allowance</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="5" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">LTA</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="56" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">MISC</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="86" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Perfomance Bonus</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="57" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">POSTTELG</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="75" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Refund</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="20" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">STNXRX</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="76" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">TEL</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="77" value="0"></td></tr></tbody></table></table>
+													  </div></td>
+ <td><div id="DeductionCal" style="overflow: scroll; height:300px;width:300px;overflow-x: auto;">								  
+													  <table id="dataTable3"><table id="table2excel"><tbody><tr><th style="border: 1px solid rgb(221, 221, 221);">HEAD</th><th style="border: 1px solid rgb(221, 221, 221);">ACTUAL</th></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Arrear ESI</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="89" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Arrear PF</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="79" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Incentive Recovery</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="81" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">LWF Recovery</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="83" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Medical Premium</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="102" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">OTHDUCT</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="78" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">PERLOAN</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="84" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Salary Recovery</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="85" value="0"></td></tr></tbody></table></table>
+													  </div></td>
+<td><div id="Others_Caliculation" style="overflow: scroll; height:300px;width:300px;overflow-x: auto;">								  
+													  <table id="dataTable4"><table id="table2excel"><tbody><tr><th style="border: 1px solid rgb(221, 221, 221);">HEAD</th><th style="border: 1px solid rgb(221, 221, 221);">ACTUAL</th></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">TDS (-)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="21-D" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Notice Pay (+) </td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="51-E" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Gratuity (+) </td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="62-E" value="0"></td></tr><tr><td style="border: 2px solid rgb(169, 198, 201);">Notice Recovery (-)</td><td style="border: 2px solid rgb(169, 198, 201);"><input type="text" class="myclass" id="106-D" value="0"></td></tr></tbody></table></table>
+													  </div></td>
+
+</tr>
+ </tbody></table>
+	</div>
+</body>
+</html>

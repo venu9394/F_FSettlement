@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Access an array value of a JSON object.</p>
+
+<p id="demo"></p>
+
+<script>
+
+var myObj, x;
+myObj ={
+	"EMPDATA": [{
+		"STATUS": "1001",
+		"STATUS1": "1001",
+		"Error": "",
+		"COUNT": "60",
+		"EMPLOYEESEQUENCENO": "10411",
+		"CALLNAME": "DAYANAND KUMAR",
+		"DATEOFJOIN": "05.06.2015",
+		"Department": "INSTITUTION BUSINESS",
+		"Designation": "TRAINEE PRODUCT EXECUTIVE",
+		"GROSS": "32295",
+		"DATEOFRESIGNATION": "14.03.2016",
+		"LASTWORKINGDATE": "14.03.2016",
+		"PAYPERIOD": "201602",
+		"COMPANYID": "11",
+		"STRTDATE": "14.03.2016",
+		"BUSINESSUNITID": "11",
+		"EL": "0.0",
+		"MINDATE": "27.02.2016",
+		"MAXDATE": "26.08.2018",
+		"EXPERIENCE": "0.8",
+		"LASTPAYROLLDATE": "26.02.2016"
+	}],
+	"Earnings": [{
+		"COMPONENTNAME": "TRAVEL ALLOWANCE",
+		"COMPONENTVALUE": "0",
+		"PAYCOMPONENTID": "18",
+		"COMPONENTTYPECODE": "E"
+	}, {
+		"COMPONENTNAME": "GROSS",
+		"COMPONENTVALUE": "32295",
+		"PAYCOMPONENTID": "22",
+		"COMPONENTTYPECODE": "E"
+	}, {
+		"COMPONENTNAME": "BASIC",
+		"COMPONENTVALUE": "16148",
+		"PAYCOMPONENTID": "24",
+		"COMPONENTTYPECODE": "E"
+	}, {
+		"COMPONENTNAME": "HRA",
+		"COMPONENTVALUE": "8074",
+		"PAYCOMPONENTID": "25",
+		"COMPONENTTYPECODE": "E"
+	}, {
+		"COMPONENTNAME": "CA",
+		"COMPONENTVALUE": "3230",
+		"PAYCOMPONENTID": "26",
+		"COMPONENTTYPECODE": "E"
+	}, {
+		"COMPONENTNAME": "MEDICAL",
+		"COMPONENTVALUE": "1250",
+		"PAYCOMPONENTID": "27",
+		"COMPONENTTYPECODE": "E"
+	}, {
+		"COMPONENTNAME": "EDUCATION",
+		"COMPONENTVALUE": "200",
+		"PAYCOMPONENTID": "28",
+		"COMPONENTTYPECODE": "E"
+	}, {
+		"COMPONENTNAME": "SPL ALLOW",
+		"COMPONENTVALUE": "3393",
+		"PAYCOMPONENTID": "29",
+		"COMPONENTTYPECODE": "E"
+	}, {
+		"COMPONENTNAME": "KIT ALLOWANCE",
+		"COMPONENTVALUE": "0",
+		"PAYCOMPONENTID": "70",
+		"COMPONENTTYPECODE": "E"
+	}]
+};
+
+var Data=myObj.EMPDATA[0];
+  
+
+alert(Data);
+
+for (xx in Data) {
+    alert(xx +"~~"+Data[xx])
+    document.getElementById("demo").innerHTML += Data[xx];
+}
+
+
+//x = myObj.SD1[1].cars;
+
+//x = myObj.SD1[1].cars;
+for(var i=0;i<myObj.Earnings.length;i++){
+
+  x = myObj.Earnings[i];
+for (xx in x) {
+    //alert(xx +"~~"+x[xx])
+   // document.getElementById("demo").innerHTML += x[xx];
+}
+}
+
+//document.getElementById("demo").innerHTML = x;
+
+</script>
+
+</body>
+</html>

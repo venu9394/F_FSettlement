@@ -1,0 +1,1070 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	 <!--  <link rel="stylesheet" href="/resources/demos/style.css"> -->
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	  
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  
+	  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script src="jquery.table2excel.js"></script>
+<script src="js/tabledisplay.js"></script>
+
+<style>
+.myclass {
+    width: 100px;
+}
+</style>
+</head>
+<body>
+
+<table align="center">
+<tr>
+<td>EmployeeCodeNumber</td>
+<td><input type="text" id="empid" name="empid" onkeyup="fetchdata()" maxlength="6" autocomplete="off"></td>
+<td>Name of the Employee</td>
+<td><input type="text" id="empname" name="empname" readonly></td>
+</tr>
+
+<tr>
+<td>Designation</td>
+<td><input type="text" id="designation" name="designation" readonly></td>
+<td>Department</td>
+<td><input type="text" id="department" name="department" readonly></td>
+</tr>
+
+<tr>
+<td>Date of Joining</td>
+<td><input type="text" id="doj" name="doj" readonly></td>
+
+</tr>
+
+<tr>
+<td>Date of Resignation/Termination</td>
+<td><input type="text" id="emp_resig" name="emp_resig" readonly></td>
+<td>Date of Relieving</td>
+<td><input type="text" id="emp_relieving" name="emp_relieving" readonly></td>
+</tr>
+
+
+<tr>
+<td>Start Date</td>
+<td><input type="text" id="resig_date" name="resig_date" readonly></td>
+<td>End Date</td>
+<td><input type="text" id="relieving_date" name="relieving_date" readonly></td>
+
+</tr>
+
+<tr>
+<td>Total Days</td>
+<td><input type="text" id="total_days" name="total_days"></td>
+<td>Lop</td>
+<td><input type="text" id="lop" name="lop" value='0' onblur="PayableDays()"/></td>
+<td>Total Payable Days</td>
+<td><input type="text" id="total_payable_days" name="total_payable_days"></td>
+</tr>
+
+<tr>
+<td>Gross Monthly Salary</td>
+<td><input type="text" id="gross_month" name="gross_month" readonly></td>
+<td>Total days Payable (Salary)</td>
+<td><input type="text" id="total_days_" name="total_days_" readonly></td>
+</tr>
+
+
+<tr>
+<td>Total Leaves Payable / Recoverable (+/-)</td>
+<td><input type="number" id="total_leaves" name="total_leaves" ></td>
+</tr>
+
+<!-- 
+<tr>
+<td>EmployeeCodeNumber</td>
+<td><input type="text" id="" name="" readonly></td>
+</tr> -->
+
+<tr>
+<td>CTC Consider /Not </td>
+<td>
+Yes &nbsp; <input type="radio" name='ctc' id='ctc_y' checked /> 
+No &nbsp; <input type="radio" name='ctc' id='ctc_n' />
+
+</td>
+</tr>
+
+<tr>
+<td colspan="2"></td>
+<td>
+<input type='button' value='Caliculate CTC' onclick='loadCTC();'>
+</td>
+</tr>
+
+
+
+<!-- 
+<tr>
+<td>EmployeeCodeNumber</td>
+<td><input type="text" id="" name="" readonly></td>
+</tr> -->
+
+
+</table>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<table align="center">
+<tr>
+<td>CTC Gross</td>
+<td><input type="text" id="CTCEarning" class="myclass" readonly /></td>
+<td>CTC Deduction</td>
+<td><input type="text" id="CTCDeduction" class="myclass" readonly /></td>
+<td>OTH Earings</td>
+<td><input type="text" id="OTH_Ear" class="myclass" readonly /></td>
+<td>OTH Deductions</td>
+<td><input type="text" id="OTH_Ded" class="myclass" readonly /></td>
+<td>OTH</td>
+<td><input type="text" id="OTH_Others" class="myclass" readonly /></td>
+</tr>
+</table>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<table>
+<tr>
+<th>CTC Components</th>
+<th>Earnings</th>
+<th>Deductions</th>
+<th>Other Deductions</th>
+</tr>
+<tr>
+ <td><div style="overflow: scroll; height:300px;width:450px;overflow-x: auto;">								  
+													  <table  id="dataTable" ></table>
+													  </div></td>
+ <td><div id="EarningCal" style="overflow: scroll; height:300px;width:300px;overflow-x: auto;">								  
+													  <table  id="dataTable2" ></table>
+													  </div></td>
+ <td><div id="DeductionCal" style="overflow: scroll; height:300px;width:300px;overflow-x: auto;">								  
+													  <table  id="dataTable3" ></table>
+													  </div></td>
+<td><div id="Others_Caliculation" style="overflow: scroll; height:300px;width:300px;overflow-x: auto;">								  
+													  <table  id="dataTable4" ></table>
+													  </div></td>
+
+</tr>
+ </table> 
+<select id="Components" style='display:none'>
+    </select>
+
+
+ <script>
+ var componentsEr=[]; 
+ var componentsDe=[]; 
+ 
+ function fetchdata(){
+	 
+	 var empid=$('#empid').val();
+	 
+	// alert(empid.length);
+	 if(empid==''){
+		 
+		 alert('Please Enter EmployeeID');
+		 return false;
+	 }
+	 
+	 if(empid.length>=5){
+		 
+		//alert('success'); 
+		 
+		
+
+		var xhr = new XMLHttpRequest();
+	/* 	var url = "url"; */
+	var url = "AjaxData?type=basicdata&employeeid="+empid;
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.onreadystatechange = function () {
+		    if (xhr.readyState === 4 && xhr.status === 200) {
+		    //	alert(xhr.responseText);
+		    
+		        var json = JSON.parse(xhr.responseText);
+		  
+		    //    alert(componentsEr);
+		        
+				if(json=='101'){
+					  
+					  alert('Please Contact Admin...');
+				    	 $('#empname').val('');
+				    	 $('#designation').val('');
+				    	 $('#department').val('');
+				    	 $('#doj').val('');
+				    	 $('#resig_date').val('');
+				    	 $('#relieving_date').val('');	    	 
+				    	 $('#gross_month').val('');
+				    	 $('#emp_relieving').val('');
+				    	 $('#emp_resig').val('');
+				    	 
+				    	 
+				    	 
+				  }else if(json=='102'){
+					  
+					  
+					  alert('Connection Problem. Please try again...');
+				    	 $('#empname').val('');
+				    	 $('#designation').val('');
+				    	 $('#department').val('');
+				    	 $('#doj').val('');
+				    	 $('#resig_date').val('');
+				    	 $('#relieving_date').val('');	    	 
+				    	 $('#gross_month').val('');
+				    	 $('#emp_relieving').val('');
+				    	 $('#emp_resig').val('');
+				    	 
+				  }else if(json=='204'){
+					  
+					  alert('Please Enter Valid EmployeeID');
+						 $('#empname').val('');
+				    	 $('#designation').val('');
+				    	 $('#department').val('');
+				    	 $('#doj').val('');
+				    	 $('#resig_date').val('');
+				    	 $('#relieving_date').val('');
+				    	 $('#gross_month').val('');
+				    	
+				    	 $('#emp_relieving').val('');
+				    	 $('#emp_resig').val('');
+				    	 
+				    	 $('#dataTable').html('');
+				    	 $('#dataTable2').html('');
+				    	 $('#dataTable3').html('');
+					  
+					  
+				  }else if(json=='1004'){
+					  
+					  alert('Please Check Employee DateofResignation Submitted or not');
+						 $('#empname').val('');
+				    	 $('#designation').val('');
+				    	 $('#department').val('');
+				    	 $('#doj').val('');
+				    	 $('#resig_date').val('');
+				    	 $('#relieving_date').val('');
+				    	 $('#gross_month').val('');
+				    	 $('#emp_relieving').val('');
+				    	 $('#emp_resig').val('');
+				    	
+				    	 $('#dataTable').html('');
+				    	 $('#dataTable2').html('');
+				    	 $('#dataTable3').html('');
+					  
+				  } else{
+					  var data1=JSON.stringify(json[0]);
+					  var data2=JSON.stringify(json[1]);
+					// alert(data2);
+					// alert(data2[1]);
+					  var data3=JSON.stringify(json[2]);
+					  var data4=JSON.stringify(json[3]);
+					  var data5=JSON.stringify(json[4]);
+					  var data6=json[5];
+					  componentsEr=json[6];
+					  componentsDe=json[7];
+					  
+				        var data_1 = data1.replace("[", "").replace("]", "");
+						var  jsondata_1 = JSON.parse(data_1);
+						console.log(jsondata_1.CALLNAME);
+					  
+					    $('#empname').val(jsondata_1.CALLNAME);
+					    $('#doj').val(jsondata_1.DATEOFJOIN);
+					    $('#department').val(jsondata_1.Department);		    
+					    $('#designation').val(jsondata_1.Designation);
+					    $('#gross_month').val(jsondata_1.GROSS); 
+				    	$('#emp_resig').val(jsondata_1.DATEOFRESIGNATION);
+				    	$('#emp_relieving').val(jsondata_1.LASTWORKINGDATE);
+			    //	 $('#resig_date').val(jsondata_1.FROMDATE);
+				    	
+				    //	 $("#resig_date").val($.datepicker.formatDate("dd.mm.yy",jsondata_1.FROMDATE));
+					    //CreateTableFromJSON(data2);
+				
+					    
+					    
+					    loadData(data2);
+					    loadData2(data3);
+					    loadData3(data4);
+					    loadData4(data5);
+					  
+					    
+		var ddlCustomers = document.getElementById("Components");
+         
+          //Add the Options to the DropDownList.
+          for (var i = 0; i < data6.length; i++) {
+              var option = document.createElement("OPTION");
+
+              //Set Customer Name in Text part.
+              option.text = data6[i];
+
+              //Set CustomerId in Value part.
+              option.value = data6[i];
+
+              //Add the Option element to DropDownList.
+       //       ddlCustomers.options.add(option,null);
+              
+              ddlCustomers.options.add(option);
+              
+          } 
+          
+          
+          
+          
+
+				  }
+				
+				
+		    }
+		};
+	
+		xhr.send();	
+	 }else{
+		 
+		 $('#empname').val('');
+    	 $('#designation').val('');
+    	 $('#department').val('');
+    	 $('#doj').val('');
+    	 $('#resig_date').val('');
+    	 $('#relieving_date').val('');
+    	 $('#gross_month').val('');
+    	 $('#emp_relieving').val('');
+    	 $('#emp_resig').val('');
+    	
+    	 $('#dataTable').html('');
+    	 $('#dataTable2').html('');
+    	 $('#dataTable3').html('');
+	 }
+	 
+	 
+ }
+ 
+/*  
+  function SampleTable(data){
+
+	  
+	 var data2=data;
+	 alert(JSON.stringify(data2));
+	 var data3=JSON.stringify(data2);
+	 var data_1 = data3.replace("[", "").replace("]", "");
+	 var  jsondata_1 = JSON.parse(data_1); 
+	 
+	 alert(jsondata_1);
+	 var element = document.createElement("input");
+
+		//Assign different attributes to the element.
+		element.setAttribute("type", "text");
+		element.setAttribute("value", jsondata_1.COMPONENTVALUE);
+		element.setAttribute("name", "Hari");
+
+
+		var foo = document.getElementById("dataTable");
+
+		//Append the element in page (in span).
+		foo.appendChild(element);
+ }
+ 
+   */
+ 
+   
+     
+   
+   
+   
+ function loadData(datas){
+ 
+//alert(datas);
+	var newdata=JSON.parse(datas);
+
+	// alert("newdata-->"+newdata);
+	 
+	var arrItems = [];      // THE ARRAY TO STORE JSON ITEMS.
+	$.each(newdata, function (index, value) {
+		//alert(value);
+	    arrItems.push(value);       // PUSH THE VALUES INSIDE THE ARRAY.
+	});
+
+	// EXTRACT VALUE FOR TABLE HEADER.
+	
+	//alert(arrItems );
+	var col = [];
+	for (var i = 0; i < arrItems.length; i++) {
+	    for (var key in arrItems[i]) {
+	        if (col.indexOf(key) === -1) {
+	            col.push(key);
+	        }
+	    }
+	}
+
+	// CREATE DYNAMIC TABLE.
+
+	var table = document.createElement("table");
+	table.setAttribute('id', 'table2excel');
+
+
+	// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+	var tr = table.insertRow(-1);
+	//table.setAttribute('class', 'noExl');// TABLE ROW.
+
+	for (var i = 0; i < col.length; i++) {
+	    var th = document.createElement("th");      // TABLE HEADER.
+	    th.style.border = "1px solid #dddddd";
+	   /*  th.style.fontFamily=" verdana,arial,sans-serif";
+	    th.style.fontsize="11px"; */
+	    th.innerHTML = col[i];
+	    tr.appendChild(th);
+	}
+
+	// ADD JSON DATA TO THE TABLE AS ROWS.
+	for (var i = 0; i < arrItems.length; i++) {
+
+	    tr = table.insertRow(-1);
+	    
+
+	    for (var j = 0; j < col.length; j++) {
+	        var tabCell = tr.insertCell(-1);
+	        
+	        if(j==0)
+	        	{
+	        	 tabCell.innerHTML = arrItems[i][col[j]];
+	        	}
+	        if(j==1){
+	        	
+	        	
+	        	 tabCell.innerHTML = "<input type='text' class='myclass' id='"+arrItems[i][col[j+1]]+"_A' value='"+arrItems[i][col[j]]+"' readonly/>";
+	        }
+	        
+	        if(j==2) 
+	        	{
+	        	 tabCell.innerHTML = "<input type='text' class='myclass' id='"+arrItems[i][col[j]]+"_P'  value='0' readonly/>";
+	        		 
+	        		 //arrItems[i][col[j]];
+	        	}
+	       
+	       
+	        tabCell.style.border = "2px solid #a9c6c9";
+	        
+	    }
+	    
+	}
+
+	// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+	var divContainer = document.getElementById("dataTable");
+	//document.getElementById("dataTable").style.border = "thick solid #0000FF";
+	divContainer.innerHTML = "";
+	divContainer.appendChild(table);
+	}
+
+   var EarningsComponents=[];
+ function loadData2(datas){
+	 
+
+		var newdata=JSON.parse(datas);
+
+		
+	//	 alert("newdata-->"+newdata);
+		 
+		var arrItems = [];      // THE ARRAY TO STORE JSON ITEMS.
+		$.each(newdata, function (index, value) {
+		    arrItems.push(value);       // PUSH THE VALUES INSIDE THE ARRAY.
+		});
+
+		// EXTRACT VALUE FOR TABLE HEADER.
+		var col = [];
+		for (var i = 0; i < arrItems.length; i++) {
+		    for (var key in arrItems[i]) {
+		        if (col.indexOf(key) === -1) {
+		            col.push(key);
+		        }
+		    }
+		}
+
+		// CREATE DYNAMIC TABLE.
+		var table = document.createElement("table");
+		table.setAttribute('id', 'table2excel');
+
+
+		// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+		var tr = table.insertRow(-1);
+		//table.setAttribute('class', 'noExl');// TABLE ROW.
+
+		for (var i = 0; i < col.length; i++) {
+		    var th = document.createElement("th");      // TABLE HEADER.
+		    th.style.border = "1px solid #dddddd";
+		   /*  th.style.fontFamily=" verdana,arial,sans-serif";
+		    th.style.fontsize="11px"; */
+		    th.innerHTML = col[i];
+		    tr.appendChild(th);
+		}
+
+		// ADD JSON DATA TO THE TABLE AS ROWS.
+		for (var i = 0; i < arrItems.length; i++) {
+
+		    tr = table.insertRow(-1);
+		    
+
+		    for (var j = 0; j < col.length; j++) {
+		        var tabCell = tr.insertCell(-1);
+		        
+		        if(j==0){
+		        tabCell.innerHTML = arrItems[i][col[j]];
+		        }if(j==1){
+		        	 tabCell.innerHTML = "<input type='text' class='myclass' id="+arrItems[i][col[j]]+" value='0'>";	
+		        	 EarningsComponents.push(arrItems[i][col[j]]);
+		        }
+		        tabCell.style.border = "2px solid #a9c6c9";
+		        
+		    }
+		}
+
+		// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+		var divContainer = document.getElementById("dataTable2");
+		//document.getElementById("dataTable").style.border = "thick solid #0000FF";
+		divContainer.innerHTML = "";
+		divContainer.appendChild(table);
+		}
+
+ var DeductionComponents=[];
+ 
+ function loadData3(datas){
+	 
+
+		var newdata=JSON.parse(datas);
+
+	//	 alert("newdata-->"+newdata);
+		 
+		var arrItems = [];      // THE ARRAY TO STORE JSON ITEMS.
+		$.each(newdata, function (index, value) {
+		    arrItems.push(value);       // PUSH THE VALUES INSIDE THE ARRAY.
+		});
+
+		// EXTRACT VALUE FOR TABLE HEADER.
+		var col = [];
+		for (var i = 0; i < arrItems.length; i++) {
+		    for (var key in arrItems[i]) {
+		        if (col.indexOf(key) === -1) {
+		            col.push(key);
+		        }
+		    }
+		}
+
+		// CREATE DYNAMIC TABLE.
+		var table = document.createElement("table");
+		table.setAttribute('id', 'table2excel');
+
+
+		// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+		var tr = table.insertRow(-1);
+		//table.setAttribute('class', 'noExl');// TABLE ROW.
+
+		for (var i = 0; i < col.length; i++) {
+		    var th = document.createElement("th");      // TABLE HEADER.
+		    th.style.border = "1px solid #dddddd";
+		   /*  th.style.fontFamily=" verdana,arial,sans-serif";
+		    th.style.fontsize="11px"; */
+		    th.innerHTML = col[i];
+		    tr.appendChild(th);
+		}
+
+		// ADD JSON DATA TO THE TABLE AS ROWS.
+		for (var i = 0; i < arrItems.length; i++) {
+
+		    tr = table.insertRow(-1);
+		    
+
+		    for (var j = 0; j < col.length; j++) {
+		        var tabCell = tr.insertCell(-1);
+		        if(j==0){
+			        tabCell.innerHTML = arrItems[i][col[j]];
+			        }if(j==1){
+			        	 tabCell.innerHTML = "<input type='text' class='myclass' id="+arrItems[i][col[j]]+" value='0'>";
+			        	 DeductionComponents.push(arrItems[i][col[j]]);
+			        }
+		  
+		        tabCell.style.border = "2px solid #a9c6c9";
+		        
+		    }
+		}
+
+		// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+		var divContainer = document.getElementById("dataTable3");
+		//document.getElementById("dataTable").style.border = "thick solid #0000FF";
+		divContainer.innerHTML = "";
+		divContainer.appendChild(table);
+		}
+ 
+ 
+ var Others_Components_Cal=[];
+ 
+ function loadData4(datas){
+	 
+
+		var newdata=JSON.parse(datas);
+
+	//	 alert("newdata-->"+newdata);
+		 
+		var arrItems = [];      // THE ARRAY TO STORE JSON ITEMS.
+		$.each(newdata, function (index, value) {
+		    arrItems.push(value);       // PUSH THE VALUES INSIDE THE ARRAY.
+		});
+
+		// EXTRACT VALUE FOR TABLE HEADER.
+		var col = [];
+		for (var i = 0; i < arrItems.length; i++) {
+		    for (var key in arrItems[i]) {
+		        if (col.indexOf(key) === -1) {
+		            col.push(key);
+		        }
+		    }
+		}
+
+		// CREATE DYNAMIC TABLE.
+		var table = document.createElement("table");
+		table.setAttribute('id', 'table2excel');
+
+
+		// CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+		var tr = table.insertRow(-1);
+		//table.setAttribute('class', 'noExl');// TABLE ROW.
+
+		for (var i = 0; i < col.length; i++) {
+		    var th = document.createElement("th");      // TABLE HEADER.
+		    th.style.border = "1px solid #dddddd";
+		   /*  th.style.fontFamily=" verdana,arial,sans-serif";
+		    th.style.fontsize="11px"; */
+		    th.innerHTML = col[i];
+		    tr.appendChild(th);
+		}
+
+		// ADD JSON DATA TO THE TABLE AS ROWS.
+		for (var i = 0; i < arrItems.length; i++) {
+
+		    tr = table.insertRow(-1);
+		    
+
+		    for (var j = 0; j < col.length; j++) {
+		        var tabCell = tr.insertCell(-1);
+		        if(j==0){
+			        tabCell.innerHTML = arrItems[i][col[j]];
+			        }if(j==1){
+			        	 tabCell.innerHTML = "<input type='text' class='myclass' id="+arrItems[i][col[j]]+" value='0'>";	
+			        	 Others_Components_Cal.push(arrItems[i][col[j]]);
+			        }
+		  
+		        tabCell.style.border = "2px solid #a9c6c9";
+		        
+		    }
+		}
+
+		// FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+		var divContainer = document.getElementById("dataTable4");
+		//document.getElementById("dataTable").style.border = "thick solid #0000FF";
+		divContainer.innerHTML = "";
+		divContainer.appendChild(table);
+		}
+ 
+   
+ $("#resig_date").click(function(){
+	
+		$('#relieving_date').val('');			
+		$('#total_days').val('');
+		$('#total_payable_days').val('');
+		$('#lop').val('0');	
+ });
+ 
+ 
+ /* $(function() {
+
+	    var myDate =  $("#resig_date").val();
+	    //    $('#resig_date').datepicker();
+	    
+	    
+	    $('#resig_date').datepicker({
+
+	    	yearRange : "-90:+0",
+			changeMonth : true,
+			changeYear : true,
+	        minDate: $("#resig_date").val(),
+	    	dateFormat : 'dd.mm.yy',
+	    	onSelect : function(Date) {
+				$("#relieving_date").datepicker('option', 'minDate', myDate);
+			}
+	    	
+	    });
+
+	    $("#relieving_date").datepicker({
+			
+			yearRange : "-90:+0",
+			changeMonth : true,
+			changeYear : true,
+			//minDate:0,
+			dateFormat : 'dd.mm.yy'
+
+		});
+
+	});
+  */
+  
+  /*----------------------Dates Cal--------------*/
+  $(function () {
+	 
+	 
+	    $("#resig_date").datepicker({
+	        defaultDate: "+1w",
+	        changeMonth: true,
+	        changeYear : true,
+	        dateFormat : 'dd.mm.yy',
+	       // numberOfMonths: 3,
+	        onClose: function (selectedDate) {
+	            $("#relieving_date").datepicker("option", "minDate", selectedDate);
+	        }
+	    });
+	    $("#relieving_date").datepicker({
+	        defaultDate: "+1w",
+	        changeMonth: true,
+	        changeYear : true,
+	        dateFormat : 'dd.mm.yy',
+	       // numberOfMonths: 3,
+	        onClose: function (selectedDate) {
+	            $("#resig_date").datepicker("option", "maxDate", selectedDate);
+	        }
+	    });
+	});
+ 
+  
+  
+  /* $("#resig_date").datepicker({
+		 
+		yearRange : "-90:+0",
+		changeMonth : true,
+		changeYear : true, 
+		maxDate:0,
+		dateFormat : 'dd.mm.yy',
+		onSelect : function(date) {
+			
+			$("#relieving_date").datepicker('option', 'minDate', date);
+			
+		}
+		
+	});
+
+	$("#relieving_date").datepicker({
+		
+		yearRange : "-90:+0",
+		changeMonth : true,
+		changeYear : true,
+		minDate:0,
+		dateFormat : 'dd.mm.yy'
+
+	}); */
+
+  
+  /*------------------Dates End-----------------------------*/
+ 
+ /* $("#resig_date").datepicker({
+	 
+		yearRange : "-90:+0",
+		changeMonth : true,
+		changeYear : true, 
+		maxDate: $("#resig_date").val(),
+		dateFormat : 'dd.mm.yy',
+		onSelect : function(date) {
+			$("#relieving_date").datepicker('option', 'minDate', date);
+		}
+	}); */
+ 
+ 
+
+ $('#relieving_date').on('keyup change', function(e) {
+	
+	 
+		var fromdate = document.getElementById('resig_date').value.split('.').reverse().join('-');
+		var todate = document.getElementById('relieving_date').value.split('.').reverse().join('-');
+	//	alert(fromdate + "::" +todate);
+		var from = new Date(fromdate);
+		var to = new Date(todate);
+		var diffDays = parseInt((to - from) / (1000 * 60 * 60 * 24));
+		var Days = diffDays + 1;
+		
+		
+		if($('#resig_date').val()=="")
+			{
+			alert('Please Select Start Date...');
+			
+			$('#relieving_date').val('');			
+			$('#total_days').val('');	
+			$('#total_payable_days').val('');
+			$('#lop').val('0');	
+			}else{
+		document.getElementById('total_days').value=Days;
+		
+			}
+		});
+
+	/* 	
+		function daysdiff1() {
+			var fromdate = document.getElementById('fromdate1').value.split('.').reverse().join('-');
+			var todate = document.getElementById('todate1').value.split('.').reverse().join('-');
+			var from = new Date(fromdate);
+			var to = new Date(todate);
+
+			var diffDays = parseInt((to - from) / (1000 * 60 * 60 * 24));
+		//	alert(diffDays);
+			var Days = diffDays + 1;
+			document.getElementById('induction_totaldays').value = Days;
+		}
+		 */
+ 
+ </script>
+ <script>
+ // ********* caliculation part***********
+ var CTCSum=0;
+ var CTCSum_Dedu=0;
+ function loadCTC(){
+	 
+	 var SelObj = document.getElementById("Components");
+     var com_Ob="";
+     var Com_gross=0;
+     var Com_Paid=0;
+     var Com_Sum=0;
+     var Com_SumPaid=0;
+     var emp_workdays=20;
+     var Sum_of_payble_payperiod_days=30;
+     var com_Obj_A=0;
+     var com_Obj_P=0;
+     CTCSum=0;
+     CTCSum_Dedu=0;
+   //  alert(componentsEr+"::"+componentsDe);
+     //Add the Options to the DropDownList.
+  try{
+     for (var i = 0; i < componentsEr.length; i++) {
+        
+    	 com_Obj=componentsEr[i].toString();
+    	// alert(com_Obj);
+    	 com_Obj_A=com_Obj.concat("_A");
+    	 com_Obj_P=com_Obj.concat("_P");
+    	 var Com_gross= document.getElementById(""+com_Obj_A+"");
+    	 var Com_paid_box=document.getElementById(""+com_Obj_P+"");
+    	 Com_Sum=eval(Com_gross.value) / eval(Sum_of_payble_payperiod_days);
+    	 Com_SumPaid=Com_Sum * emp_workdays;
+    	 Com_paid_box.value=Math.floor(Com_SumPaid).toFixed(0);
+    	 console.log(Com_SumPaid); 
+    	 if(com_Obj!="22" ){
+    	    CTCSum=CTCSum+Com_SumPaid;
+    	    
+    	 }  
+     } 
+     
+     var Gross=document.getElementById("22_P")
+         Gross=Gross.value;
+     if(Gross!=CTCSum){
+    	 document.getElementById("22_P").value=Math.floor(CTCSum);
+     }
+     
+//     alert(Math.floor(CTCSum));
+     
+      com_Ob="";
+      Com_gross=0;
+      Com_Paid=0;
+      Com_Sum=0;
+      Com_SumPaid=0;
+      com_Obj_A=0;
+      com_Obj_P=0;
+     
+     for (var i = 0; i < componentsDe.length; i++) {
+         
+    	 com_Obj=componentsDe[i].toString();
+    	 com_Obj_A=com_Obj.concat("_A");
+    	 com_Obj_P=com_Obj.concat("_P");
+    	 var Com_gross= document.getElementById(""+com_Obj_A+"");
+    	 var Com_paid_box=document.getElementById(""+com_Obj_P+"");
+    	 Com_Sum=eval(Com_gross.value) / eval(Sum_of_payble_payperiod_days);
+    	 Com_SumPaid=Com_Sum * emp_workdays;
+    	 Com_paid_box.value=Math.floor(Com_SumPaid).toFixed(0);
+    	 console.log(Com_SumPaid); 
+    	 if(com_Obj!="22" ){
+    		 CTCSum_Dedu=CTCSum_Dedu+Com_SumPaid;
+    	 }  
+     } 
+     
+     console.log(CTCSum +"<--E  D-->"+  CTCSum_Dedu);
+    // CTCSum=CTCSum;
+    document.getElementById('CTCEarning').value=Math.floor(CTCSum);
+    document.getElementById('CTCDeduction').value=Math.floor(CTCSum_Dedu);
+ //    alert(CTCSum + "~~~" +CTCSum_Dedu);
+   //  alert("SUM::::" + evalCTCSum-CTCSum_Dedu);
+     CTCSum=eval(CTCSum)-eval(CTCSum_Dedu);
+   //  alert(CTCSum +" ::SUM ");
+     EarningCal(CTCSum);
+
+  }catch(err){
+	  alert(err.message);
+  }
+	 
+ }
+ 
+ var Ear_Sum=0;
+ 
+ function EarningCal(ErSum){
+	 Ear_Sum=0;
+	 var EarningCal=document.getElementById('EarningCal');
+	 
+//	alert(EarningsComponents);
+	var docId=0;
+	for(var i=0;i<EarningsComponents.length;i++){
+		
+		docId=document.getElementById(""+EarningsComponents[i]+"");
+		//alert(docId+"::ids");
+		docId=docId.value;
+		Ear_Sum=Ear_Sum+eval(docId);
+		// console.log(docId); 
+	}
+	//CTCSum=ErSum.toFixed(0);
+document.getElementById('OTH_Ear').value=Ear_Sum.toFixed(0);
+DeductionCal();
+	// alert(docId+ "::NetPaidSalary ::" +CTCSum);
+	 
+ }
+ 
+ var Other_Deduction_sum=0;
+ 
+ function DeductionCal(){
+	 
+	 Other_Deduction_sum=0;
+	 var deduction_componentId=0;
+	 var Other_Deduction=document.getElementById('DeductionCal');
+//	 alert(DeductionComponents.length);
+	 for(var i=0;i<DeductionComponents.length;i++){
+			
+		 deduction_componentId=document.getElementById(""+DeductionComponents[i]+"");
+		 deduction_componentId=deduction_componentId.value;
+	     Other_Deduction_sum=Other_Deduction_sum+eval(deduction_componentId);
+
+		}
+	 
+	 document.getElementById('OTH_Ded').value=Other_Deduction_sum;
+	 OtherCal();
+ }
+ 
+ var Others_Cal=0;
+ 
+ function OtherCal(){
+	 
+	 Others_Cal=0;
+	 var Others_ComponentID=0;
+	 var ComponentId_Others=document.getElementById('Others_Caliculation');
+	 
+	 for(var i=0;i<Others_Components_Cal.length;i++){
+			
+		 Others_ComponentID=document.getElementById(""+Others_Components_Cal[i]+"");
+		 Others_ComponentID=Others_ComponentID.value;
+		 Others_Cal=Others_Cal+eval(Others_ComponentID);
+
+		}
+	 
+	 document.getElementById('OTH_Others').value=Others_Cal;
+  
+	 
+ }
+ 
+ 
+ var sum_payabledays;
+ 
+function PayableDays(){
+	 
+	// alert('relieving_date');
+	sum_payabledays=0;
+	var empid=document.getElementById('empid').value;
+	var fromdate=document.getElementById('resig_date').value;
+	var todate=document.getElementById('relieving_date').value;
+	
+	var gross_month=document.getElementById('gross_month').value;
+	var total_days=document.getElementById('total_days').value;
+	var lop=document.getElementById('lop').value;
+	var total_payable_days=0;
+	
+	
+	if(empid==''){
+		
+		alert('Please Enter EmployeeID');
+		return false;
+	}
+	else if(fromdate=='' && todate==''){
+	 alert('Please select start and end date');
+	 $('#total_days').val('');	
+		$('#total_payable_days').val('');
+		$('#lop').val('0');
+		return false;
+	}else if(fromdate==''){
+		
+		alert('Please select start date');
+		return false;
+		
+	}else if(todate==''){
+		alert('Please select end date');
+		return false;		
+	}else if(todate<fromdate){
+		
+		alert('end date should be greater than start date');
+		return false;
+	}else if(lop==''){
+		
+		alert('Please enter LOP >= 0');
+		return false;
+	}else{
+		total_payable_days=total_days-lop;
+		document.getElementById('total_payable_days').value=total_payable_days;
+		
+	}
+	
+if(fromdate!='' && todate!='' && lop!=''){
+		
+
+	var xhr = new XMLHttpRequest();
+	var url = "AjaxData?type=payperiodcount&fromdate="+fromdate+"&todate="+todate;
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.onreadystatechange = function () {
+		    if (xhr.readyState === 4 && xhr.status === 200) {
+		    //	alert(xhr.responseText);
+		    	
+		    	   var data = JSON.parse(xhr.responseText);
+		    	   var data_1=JSON.stringify(data[0]);
+		    	   var data_2 = data_1.replace("[", "").replace("]", "");
+					var  jsondata_2 = JSON.parse(data_2);
+					console.log(jsondata_2.COUNTID);
+					
+					var payperiod_count=jsondata_2.COUNTID;
+					var payperiod_days=jsondata_2.DIFF;
+					
+					sum_payabledays=((payperiod_count*gross_month)/payperiod_days)*total_payable_days;
+
+					console.log(sum_payabledays);
+					
+	
+		    }
+		};
+	
+	xhr.send();	
+	
+	}
+	
+ }
+ 
+ </script>
+ 
+
+</body>
+</html>

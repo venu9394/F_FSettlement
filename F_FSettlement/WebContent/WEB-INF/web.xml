@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>F_FSettlement</display-name>
+  <welcome-file-list>
+    <welcome-file>full_final.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>AjaxData</display-name>
+    <servlet-name>AjaxData</servlet-name>
+    <servlet-class>com.hhcl.finalsettlement.AjaxData</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AjaxData</servlet-name>
+    <url-pattern>/AjaxData</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>F_F_InsertData</display-name>
+    <servlet-name>F_F_InsertData</servlet-name>
+    <servlet-class>com.hhcl.finalsettlement.F_F_InsertData</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>F_F_InsertData</servlet-name>
+    <url-pattern>/F_F_InsertData</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>FetchFormData</display-name>
+    <servlet-name>FetchFormData</servlet-name>
+    <servlet-class>com.hhcl.finalsettlement.FetchFormData</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FetchFormData</servlet-name>
+    <url-pattern>/FetchFormData</url-pattern>
+  </servlet-mapping>
+</web-app>
